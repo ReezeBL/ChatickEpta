@@ -32,13 +32,16 @@ namespace Server.Protocol.NetHandlers
                 switch (parts[0])
                 {
                     case "/users":
-                        new Protocol.Packets.PacketRequest(0,0).handle(this);
+                        new Protocol.Packets.PacketRequest(0, 0).handle(this);
                         break;
                     case "/rooms":
                         new Protocol.Packets.PacketRequest(1, 0).handle(this);
                         break;
                     case "/room":
-                       new Protocol.Packets.PacketRequest(2, int.Parse(parts[1])).handle(this);
+                        new Protocol.Packets.PacketRequest(2, int.Parse(parts[1])).handle(this);
+                        break;
+                    default:
+                        client.SendPacket(new PacketMessage("Неправильная комманда!"));
                         break;
                 }
             }
