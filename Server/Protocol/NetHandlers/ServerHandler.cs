@@ -38,7 +38,11 @@ namespace Server.Protocol.NetHandlers
                         new Protocol.Packets.PacketRequest(1, 0).handle(this);
                         break;
                     case "/room":
-                        new Protocol.Packets.PacketRequest(2, int.Parse(parts[1])).handle(this);
+                        int room;
+                        if (!int.TryParse(parts[1], out room))
+                            client.SendPacket(new PacketMessage("Номер комнаты должен быть числом!"));
+                        else
+                            new Protocol.Packets.PacketRequest(2, int.Parse(parts[1])).handle(this);
                         break;
                     default:
                         client.SendPacket(new PacketMessage("Неправильная комманда!"));
@@ -70,8 +74,7 @@ namespace Server.Protocol.NetHandlers
         }
 
         public override void HandleRequestPacket(PacketRequest packet)
-        {
-            Console.WriteLine("Another fucking request..");
+        {            
             if (packet.request == 0)
             {
                 Room r = server.getRoomByID(client.roomId);
